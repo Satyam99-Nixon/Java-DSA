@@ -1,0 +1,50 @@
+Last Digit of a^b
+Difficulty: MediumAccuracy: 23.8%Submissions: 104K+Points: 4
+Given two integers a and b in the form of strings. Return the last digit of ab.
+
+Examples:
+
+Input: a = "3", b = "10"
+Output: 9
+Explanation: 310 = 59049. Last digit is 9.
+Input: a = "6", b = "2"
+Output: 6
+Explanation: 62 = 36. Last digit is 6.
+Constraints:
+1 ≤ a.size(), b.size() ≤ 1000
+a and b consist only of numeric digits ('0' - '9')
+a and b do not contain any leading zeros, except when number itself is "0"
+
+
+class Solution {
+    public int getLastDigit(String a, String b) {
+        if (b.equals("0")) return 1;
+
+        int lastDigit = a.charAt(a.length() - 1) - '0';
+
+        int[][] cycles = {
+            {0},
+            {1},
+            {2, 4, 8, 6},
+            {3, 9, 7, 1},
+            {4, 6},
+            {5},
+            {6},
+            {7, 9, 3, 1},
+            {8, 4, 2, 6},
+            {9, 1}
+        };
+
+        int[] cycle = cycles[lastDigit];
+        int len = cycle.length;
+
+        int mod = 0;
+        for (int i = 0; i < b.length(); i++) {
+            mod = (mod * 10 + (b.charAt(i) - '0')) % len;
+        }
+
+        if (mod == 0) mod = len;
+
+        return cycle[mod - 1];
+    }
+}
